@@ -1,0 +1,29 @@
+from collections import defaultdict
+import numpy as np
+
+# Sample data
+spam_words = {"win": 4, "money": 3, "free": 5}
+ham_words = {"hello": 3, "meeting": 4, "project": 3}
+vocab = set(spam_words) | set(ham_words)
+
+def naive_bayes_classifier(email, spam_words, ham_words, alpha=1):
+    total_spam = sum(spam_words.values())
+    total_ham = sum(ham_words.values())
+
+    p_spam = 0.5  # assume equal prior
+    p_ham = 0.5
+
+    spam_likelihood = np.log(p_spam)
+    ham_likelihood = np.log(p_ham)
+
+    for word in email:
+        spam_word_prob = (spam_words.get(word, 0) + alpha) / (total_spam + alpha * len(vocab))
+        ham_word_prob = (ham_words.get(word, 0) + alpha) / (total_ham + alpha * len(vocab))
+        spam_likelihood += np.log(spam_word_prob)
+        ham_likelihood += np.log(ham_word_prob)
+
+    return "spam" if spam_likelihood > ham_likelihood else "ham"
+
+# Example email
+email = ["win", "free", "money"]
+print(f"Classified as: {naive_bayes_classifier(email, spam_words, ham_words)}")
