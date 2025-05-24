@@ -1,0 +1,28 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import beta
+
+# Prior parameters
+a_prior, b_prior = 1, 1
+
+# Observed data
+heads = 7
+tails = 3
+
+# Posterior parameters
+a_post = a_prior + heads
+b_post = b_prior + tails
+
+# Plot prior and posterior
+x = np.linspace(0, 1, 100)
+prior_dist = beta(a_prior, b_prior).pdf(x)
+posterior_dist = beta(a_post, b_post).pdf(x)
+
+plt.plot(x, prior_dist, label='Prior Beta(1,1)')
+plt.plot(x, posterior_dist, label=f'Posterior Beta({a_post},{b_post})')
+plt.title("Bayesian Update of Coin Bias")
+plt.xlabel("Probability of Heads")
+plt.ylabel("Density")
+plt.legend()
+plt.grid(True)
+plt.show()
